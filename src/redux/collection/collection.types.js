@@ -1,0 +1,4 @@
+export const CollectionActionTypes = {
+  ADD_COLLECTION: 'ADD_COLLECTION',
+  REMOVE_COLLECTION: 'REMOVE_COLLECTION',
+};
