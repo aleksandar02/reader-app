@@ -38,7 +38,13 @@ const selectCollections = (state) => state;
 
 export const selectCollectionById = createSelector(
   [selectCollections, (state, id) => id],
-  (collection, id) => collection.byId[id]
+  (collection, id) => {
+    if (id) {
+      return collection.byId[id];
+    } else {
+      return collection.byId['defaultCollection'];
+    }
+  }
 );
 
 export default collectionReducer;

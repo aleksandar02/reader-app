@@ -7,9 +7,11 @@ const CollectionHeader = ({ name, description }) => {
         <h1>{name}</h1>
         <p>{description}</p>
       </div>
-      <Link to='/add-book' className='btn btn-blue'>
-        Add New Book
-      </Link>
+      <div className='collection-header-actions'>
+        <Link to='/add-book' className='btn btn-blue'>
+          Create Book
+        </Link>
+      </div>
     </div>
   );
 };

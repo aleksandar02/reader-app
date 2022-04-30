@@ -1,5 +1,9 @@
 import { createSelector } from 'reselect';
 import { BookCollectionTypes } from './bookCollection.types';
+import {
+  filterBookCollectionById,
+  getRemoveBookCollectionId,
+} from './bookCollection.utils';
 
 const initialState = {
   byId: {
@@ -43,8 +47,39 @@ const initialState = {
 
 const bookCollectionReducer = (state = initialState, action) => {
   switch (action.type) {
-    case BookCollectionTypes.ADD_BOOK_TO_COLLECTION:
-      return state;
+    case BookCollectionTypes.ADD_BOOK_TO_COLLECTION: {
+      const newBookCollectionItem = {
+        id: action.payload.bookCollectionId,
+        bookId: action.payload.bookId,
+        collectionId: action.payload.collectionId,
+      };
+
+      return {
+        ...state,
+        byId: {
+          ...state.byId,
+          [action.payload.bookCollectionId]: { ...newBookCollectionItem },
+        },
+      };
+    }
+
+    case BookCollectionTypes.REMOVE_BOOK_FROM_COLLECTION: {
+      let removeBookCollectionId = getRemoveBookCollectionId(
+        state.byId,
+        action.payload.collectionId,
+        action.payload.bookId
+      );
+
+      let newBookCollection = filterBookCollectionById(
+        state.byId,
+        removeBookCollectionId
+      );
+
+      return {
+        ...state,
+        byId: { ...newBookCollection },
+      };
+    }
 
     default:
       return state;

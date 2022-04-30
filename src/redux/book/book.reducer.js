@@ -42,9 +42,36 @@ const initialState = {
 };
 
 const bookReducer = (state = initialState, action) => {
-  switch (action.payload) {
-    case BookActionTypes.ADD_BOOK:
-      return state;
+  switch (action.type) {
+    case BookActionTypes.MARK_BOOK_AS_DONE: {
+      let updatedBook = {};
+
+      Object.values(state.byId).forEach((book) => {
+        if (book.id == action.payload) {
+          updatedBook = { ...book, status: 2 };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...state.byId, [action.payload]: { ...updatedBook } },
+      };
+    }
+
+    case BookActionTypes.MARK_BOOK_AS_UNDONE: {
+      let updatedBook = {};
+
+      Object.values(state.byId).forEach((book) => {
+        if (book.id == action.payload) {
+          updatedBook = { ...book, status: 1 };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...state.byId, [action.payload]: { ...updatedBook } },
+      };
+    }
 
     default:
       return state;

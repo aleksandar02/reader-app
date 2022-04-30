@@ -4,6 +4,7 @@ body {
   margin: 0;
   font-family: 'Poppins', 'Roboto', sans-serif;
   box-sizing: border-box;
+  background: #F1F4F9;
 }
 
 h1,
@@ -28,13 +29,27 @@ p {
   border-radius: 6px;
   cursor: pointer;
   transition: all 250ms ease;
+  font-family: 'Poppins';
+  font-size: 15px;
+}
+
+.btn-small {
+  padding: 8px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.btn-default {
+  background: #D1E3EB;
+  border-color: #D1E3EB;
+  color: #8d809b;
 }
 
 .btn-blue {
   background: #0278FF;
   border-color: #0278FF;
   color: #fff;
-  font-size: 16px;
 }
 
 .btn-blue:hover {
@@ -42,13 +57,28 @@ p {
   border-color: #0372f0;
 }
 
+.btn-green {
+  background: #02FFD5;
+  border-color: #02FFD5;
+  color: #00C2A1;
+}
+
+.btn-status-blue {
+  background: #EAF4FF;
+  color: #0278FF;
+  border: 1px solid #EAF4FF;
+}
+
 /* Collection */
+.book-collection-page {
+  padding: 32px;
+}
 
 .collection-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  border-bottom: 1px solid #E6EAF1;
+  border-bottom: 1px solid #dbe0e9;
   padding-bottom: 24px;
   margin-bottom: 24px;
 }
@@ -59,4 +89,78 @@ p {
 
 .collection-header .collection-header-info p {
   color: #9385a1;
+}
+
+.collection-table-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+}
+
+/* Search bar */
+.search-container {
+  background: #fff;
+  width: 30%;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  color: #9D90AC;
+  font-size: 22px;
+  margin-right: 12px;
+}
+
+.search-container svg {
+  padding: 6px;
+}
+
+.search-container .search-input {
+  background: transparent;
+  border: none;
+  color: #9D90AC;
+  font-size: 15px;
+  outline: none;  
+  padding: 6px;
+  width: 100%;
+}
+
+.search-container .search-input:focus .search-container {
+  box-shadow: 0 19px 34px -15px rgba(147, 133, 161, 0.3);
+}
+
+.search-container .search-input::placeholder {
+  color: #9D90AC;
+  font-weight: 400;
+}
+
+/* Book */
+.book {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 20px;
+  width: 60%;
+  background: #fff;
+  border: 1px solid #fff;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  transition: all 400ms ease;
+  cursor: pointer;
+}
+
+.book:hover {
+  box-shadow: 0 19px 34px -15px rgba(147, 133, 161, 0.3);
+}
+
+.book .book-details h3 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.book .book-details p {
+  color: #9385a1;
+  font-size: 15px;
 }
