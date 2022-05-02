@@ -4,7 +4,8 @@ import BookCollectionPage from './pages/BookCollectionPage';
 import AddBookPage from './pages/AddBookPage';
 import Sidebar from './components/sidebar/Sidebar';
 import Collection from './components/collection/Collection';
-import AddCollectionPage from './pages/AddCollectionPage';
+import CreateCollectionPage from './pages/CreateCollectionPage';
+import AddBooksToCollectionPage from './pages/AddBooksToCollectionPage';
 
 function App() {
   return (
@@ -16,7 +17,11 @@ function App() {
             <Route path=':collectionId' element={<Collection />} />
           </Route>
           <Route path='/add-book' element={<AddBookPage />} />
-          <Route path='/create-collection' element={<AddCollectionPage />} />
+          <Route path='/create-collection' element={<CreateCollectionPage />} />
+          <Route
+            path='/add-books/:collectionId'
+            element={<AddBooksToCollectionPage />}
+          />
         </Routes>
       </Router>
     </div>

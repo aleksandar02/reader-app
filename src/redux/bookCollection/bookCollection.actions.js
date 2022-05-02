@@ -19,6 +19,20 @@ export const addBookToCollection = (collectionId, bookId) => (dispatch) => {
   }
 };
 
+export const addBooksToCollection = (collectionId, bookIds) => (dispatch) => {
+  try {
+    dispatch({
+      type: BookCollectionTypes.ADD_BOOKS_TO_COLLECTION,
+      payload: {
+        collectionId: collectionId,
+        bookIds: bookIds,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const removeBookFromCollection =
   (collectionId, bookId) => (dispatch) => {
     try {

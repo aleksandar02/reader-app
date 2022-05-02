@@ -24,9 +24,11 @@ const initialState = {
 
 const collectionReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CollectionActionTypes.ADD_COLLECTION: {
-      return state;
-    }
+    case CollectionActionTypes.ADD_COLLECTION:
+      return {
+        ...state,
+        byId: { ...state.byId, [action.payload.id]: { ...action.payload } },
+      };
 
     default:
       return state;

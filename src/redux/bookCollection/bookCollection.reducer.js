@@ -4,6 +4,7 @@ import {
   filterBookCollectionById,
   getRemoveBookCollectionId,
 } from './bookCollection.utils';
+import { v4 as uuid } from 'uuid';
 
 const initialState = {
   byId: {
@@ -60,6 +61,29 @@ const bookCollectionReducer = (state = initialState, action) => {
           ...state.byId,
           [action.payload.bookCollectionId]: { ...newBookCollectionItem },
         },
+      };
+    }
+
+    case BookCollectionTypes.ADD_BOOKS_TO_COLLECTION: {
+      let bookCollections = {};
+      const { collectionId, bookIds } = action.payload;
+
+      bookIds.forEach((bookId) => {
+        const newBookCollection = {
+          id: uuid(),
+          bookId: bookId,
+          collectionId: collectionId,
+        };
+
+        bookCollections = {
+          ...bookCollections,
+          [newBookCollection.id]: { ...newBookCollection },
+        };
+      });
+
+      return {
+        ...state,
+        byId: { ...state.byId, ...bookCollections },
       };
     }
 

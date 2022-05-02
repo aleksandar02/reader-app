@@ -46,6 +46,11 @@ p {
   color: #8d809b;
 }
 
+.btn-disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .btn-blue {
   background: #0278FF;
   border-color: #0278FF;
@@ -69,12 +74,33 @@ p {
   border: 1px solid #EAF4FF;
 }
 
-/* Collection */
-.book-collection-page {
-  padding: 32px;
+
+/* Form */
+.create-collection-form {
+  width: 350px;
 }
 
-.collection-header {
+.create-collection-form .input-group {
+  margin-bottom: 20px;
+}
+
+.create-collection-form .input-group > div {
+  width: 100%;
+}
+
+.create-collection-form button {
+  margin: 0 auto;
+}
+
+.text-danger {
+  font-size: 15px;
+  color: red;
+  margin-top: 4px;
+  text-align: right;
+}
+
+/* Header */
+.header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -83,12 +109,17 @@ p {
   margin-bottom: 24px;
 }
 
-.collection-header .collection-header-info h1 {
+.header .header-info h1 {
   font-weight: 600;
 }
 
-.collection-header .collection-header-info p {
+.header .header-info p {
   color: #9385a1;
+}
+
+/* Collection */
+.main-content {
+  padding: 32px;
 }
 
 .collection-table-actions {
@@ -147,8 +178,13 @@ p {
   border: 1px solid #fff;
   border-radius: 6px;
   margin-bottom: 12px;
-  transition: all 400ms ease;
+  transition: box-shadow 400ms ease;
   cursor: pointer;
+  border-left: 3px solid #fff;
+}
+
+.selected-book {
+  border-left: 3px solid #0278FF;
 }
 
 .book:hover {
@@ -164,3 +200,4 @@ p {
   color: #9385a1;
   font-size: 15px;
 }
+

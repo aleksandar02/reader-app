@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import { selectBooksByIds } from '../../redux/book/book.reducer';
 import { selectBookIdsByCollectionId } from '../../redux/bookCollection/bookCollection.reducer';
 import { selectCollectionById } from '../../redux/collection/collection.reducer';
-import CollectionHeader from './CollectionHeader';
 import Books from '../book/Books';
 import Book from '../book/Book';
 import SearchBar from '../searchBar/SearchBar';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Header from '../header/Header';
 
 const Collection = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -34,17 +34,21 @@ const Collection = () => {
 
   return (
     <div>
-      <CollectionHeader
-        name={collection.name}
-        description={
+      <Header
+        title={collection.name}
+        subtitle={
           collection.description ? collection.description : 'No description'
         }
-      />
+      >
+        <Link to='/add-book' className='btn btn-blue'>
+          Create Book
+        </Link>
+      </Header>
       <div className='collection-table-actions'>
         <SearchBar setSearchValue={setSearchValue} />
         {collectionId == 'defaultCollection' ||
         collectionId == 'completedCollection' ? null : (
-          <Link to='/add-book' className='btn btn-default'>
+          <Link to={`add-books/${collection.id}`} className='btn btn-default'>
             Add Books to Collection
           </Link>
         )}

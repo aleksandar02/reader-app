@@ -1,3 +1,4 @@
+import { Checkbox } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import {
   markBookAsDone,
@@ -5,7 +6,7 @@ import {
 } from '../../redux/book/book.actions';
 import Button from '../button/Button';
 
-const Book = ({ book }) => {
+const Book = ({ book, canSelectBook = false, handleOnChange, selectedIds }) => {
   const dispatch = useDispatch();
 
   let buttonText = 'Mark as done';
@@ -22,19 +23,32 @@ const Book = ({ book }) => {
     }
   };
 
+  let selectedBookCssClass = '';
+
+  if (selectedIds && selectedIds.includes(book.id)) {
+    selectedBookCssClass = 'selected-book';
+  }
+
   return (
-    <div className='book'>
+    <div className={`book ${selectedBookCssClass}`}>
       <div className='book-details'>
         <h3>{book.title}</h3>
         <p>{book.author}</p>
       </div>
       <div className='book-actions'>
-        <Button
-          handleOnClick={() => changeBookStatus(book.id, book.status)}
-          buttonText={buttonText}
-          type='button'
-          cssStyle='btn btn-small btn-status-blue'
-        />
+        {canSelectBook ? (
+          <Checkbox
+            checked={selectedIds.includes(book.id)}
+            onChange={() => handleOnChange(book.id)}
+          />
+        ) : (
+          <Button
+            handleOnClick={() => changeBookStatus(book.id, book.status)}
+            buttonText={buttonText}
+            type='button'
+            cssStyle='btn btn-small btn-status-blue'
+          />
+        )}
       </div>
     </div>
   );
