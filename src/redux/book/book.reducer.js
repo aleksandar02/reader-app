@@ -8,6 +8,7 @@ const initialState = {
       title: 'Harry Potter',
       author: 'J.K. Rowling',
       isbn: 'SDCVXFDF12',
+      cover_i: 10521270,
       status: 1,
     },
     'book2': {
@@ -15,6 +16,7 @@ const initialState = {
       title: 'The Great Gatsby',
       author: 'F. Skot Fitzgerald',
       isbn: 'VTYVGFFDF2',
+      cover_i: 8432047,
       status: 2,
     },
     'book3': {
@@ -22,13 +24,15 @@ const initialState = {
       title: 'Harry Potter: Prisoner of Azkaban',
       author: 'J.K. Rowling',
       isbn: 'VCDFFFDF2D',
+      cover_i: 10580435,
       status: 1,
     },
     'book4': {
       id: 'book4',
-      title: 'Atomic Habits',
-      author: 'James Clear',
+      title: 'Alchemist',
+      author: 'Ben Jonson',
       isbn: 'JVDVGASCF2',
+      cover_i: 7463992,
       status: 2,
     },
     'book5': {
@@ -36,6 +40,7 @@ const initialState = {
       title: 'Rich Dad Poor Dad',
       author: 'Robert Kiyosaki',
       isbn: 'ACXZVKDI45',
+      cover_i: 8315302,
       status: 1,
     },
   },
@@ -97,5 +102,15 @@ export const selectBooksByIds = createSelector(
     return selectedBooks;
   }
 );
+
+export const selectAllBookIds = createSelector([selectBooks], (book) => {
+  let allBookIds = [];
+
+  Object.values(book.byId).forEach((book) => {
+    allBookIds = [...allBookIds, book.id];
+  });
+
+  return allBookIds;
+});
 
 export default bookReducer;

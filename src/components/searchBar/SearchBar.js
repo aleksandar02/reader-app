@@ -1,14 +1,14 @@
 import { BiSearch } from 'react-icons/bi';
 
-const SearchBar = ({ setSearchValue }) => {
+const SearchBar = ({ handleChange, placeholderText, cssClass = '' }) => {
   return (
-    <div className='search-container'>
+    <div className={`search-container ${cssClass}`}>
       <BiSearch />
       <input
         className='search-input'
         type='text'
-        placeholder='Search collection...'
-        onChange={(e) => setSearchValue(e.target.value)}
+        placeholder={placeholderText}
+        onChange={(e) => handleChange(e.target.value)}
       />
     </div>
   );

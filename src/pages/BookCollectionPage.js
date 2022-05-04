@@ -2,7 +2,7 @@ import Collection from '../components/collection/Collection';
 
 const BookCollectionPage = () => {
   return (
-    <div className='main-content'>
+    <div className='main-section'>
       <Collection />
     </div>
   );

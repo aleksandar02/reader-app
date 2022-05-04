@@ -86,6 +86,28 @@ const bookCollectionReducer = (state = initialState, action) => {
         byId: { ...state.byId, ...bookCollections },
       };
     }
+    case BookCollectionTypes.ADD_BOOK_TO_COLLECTIONS: {
+      let bookCollections = {};
+      const { bookId, collectionIds } = action.payload;
+
+      collectionIds.forEach((collectionId) => {
+        const newBookCollection = {
+          id: uuid(),
+          bookId: bookId,
+          collectionId: collectionId,
+        };
+
+        bookCollections = {
+          ...bookCollections,
+          [newBookCollection.id]: { ...newBookCollection },
+        };
+      });
+
+      return {
+        ...state,
+        byId: { ...state.byId, ...bookCollections },
+      };
+    }
 
     case BookCollectionTypes.REMOVE_BOOK_FROM_COLLECTION: {
       let removeBookCollectionId = getRemoveBookCollectionId(
@@ -114,14 +136,44 @@ const selectBookCollections = (state) => state;
 
 export const selectBookIdsByCollectionId = createSelector(
   [selectBookCollections, (state, collectionId) => collectionId],
-  (bookCollections, collectionId) => {
-    const filteredCollections = Object.values(bookCollections.byId).filter(
+  (bookCollection, collectionId) => {
+    const filteredCollections = Object.values(bookCollection.byId).filter(
       (bookCollection) => bookCollection.collectionId == collectionId
     );
 
     const bookIds = filteredCollections.map((collection) => collection.bookId);
 
     return bookIds;
+  }
+);
+
+export const selectBookIdsInCollection = createSelector(
+  [selectBookCollections, (state, collectionId) => collectionId],
+  (bookCollection, collectionId) => {
+    let bookIds = [];
+
+    Object.values(bookCollection.byId).forEach((bookCollection) => {
+      if (bookCollection.collectionId == collectionId) {
+        bookIds = [...bookIds, bookCollection.bookId];
+      }
+    });
+
+    return bookIds;
+  }
+);
+
+export const selectCollectionIdsByBookId = createSelector(
+  [selectBookCollections, (state, bookId) => bookId],
+  (bookCollection, bookId) => {
+    let collectionIds = [];
+
+    Object.values(bookCollection.byId).forEach((bookCollection) => {
+      if (bookCollection.bookId == bookId) {
+        collectionIds = [...collectionIds, bookCollection.collectionId];
+      }
+    });
+
+    return collectionIds;
   }
 );
 

@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { selectCollectionById } from '../redux/collection/collection.reducer';
 
 import Header from '../components/header/Header';
 import SearchBar from '../components/searchBar/SearchBar';
 import Books from '../components/book/Books';
-import Book from '../components/book/Book';
+import BookItem from '../components/book/BookItem';
 import Button from '../components/button/Button';
 import { addBooksToCollection } from '../redux/bookCollection/bookCollection.actions';
+import { selectAllBookIds, selectBooksByIds } from '../redux/book/book.reducer';
+import { selectBookIdsInCollection } from '../redux/bookCollection/bookCollection.reducer';
 
 const AddBooksToCollectionPage = () => {
   const [searchValue, setSearchValue] = useState('');
@@ -21,9 +23,22 @@ const AddBooksToCollectionPage = () => {
     selectCollectionById(state.collection, collectionId)
   );
 
-  const books = useSelector((state) => state.book.byId);
+  // Select All book Ids
+  const allBookIds = useSelector((state) => selectAllBookIds(state.book));
 
-  const isEmpty = Object.keys(books).length == 0;
+  // Select Book Ids that exist in current collection
+  const bookIdsInCollection = useSelector((state) =>
+    selectBookIdsInCollection(state.bookCollection, collection.id)
+  );
+  // Calculate ids that do not exist
+  const bookIdsToShow = allBookIds.filter(function (obj) {
+    return bookIdsInCollection.indexOf(obj) == -1;
+  });
+
+  // * Select books that are not added
+  const booksToShow = useSelector((state) =>
+    selectBooksByIds(state.book, bookIdsToShow)
+  );
 
   const handleOnChange = (id) => {
     const exists = selectedIds.find((bookId) => bookId == id);
@@ -43,7 +58,7 @@ const AddBooksToCollectionPage = () => {
 
   const headerTitle = `Add Books to '${collection.name}' Collection`;
 
-  const filteredBooks = Object.values(books).filter((book) => {
+  const filteredBooks = Object.values(booksToShow).filter((book) => {
     if (searchValue == '') {
       return book;
     } else if (book.title.toLowerCase().includes(searchValue.toLowerCase())) {
@@ -52,7 +67,7 @@ const AddBooksToCollectionPage = () => {
   });
 
   return (
-    <div className='main-content'>
+    <div className='main-section'>
       <Header title={headerTitle} subtitle='Select the books you want to add.'>
         <Button
           type='button'
@@ -64,14 +79,15 @@ const AddBooksToCollectionPage = () => {
         />
       </Header>
       <div className='collection-table-actions'>
-        <SearchBar setSearchValue={setSearchValue} />
+        <SearchBar
+          placeholderText='Search for a book...'
+          handleChange={setSearchValue}
+        />
       </div>
       <Books>
-        {isEmpty ? (
-          <p>There are no books to show.</p>
-        ) : (
+        {filteredBooks.length > 0 ? (
           filteredBooks.map((book) => (
-            <Book
+            <BookItem
               key={book.id}
               book={book}
               canSelectBook={true}
@@ -79,6 +95,11 @@ const AddBooksToCollectionPage = () => {
               selectedIds={selectedIds}
             />
           ))
+        ) : (
+          <p>
+            No books to show. <Link to='/add-book'>Add new book</Link> to your
+            collection.
+          </p>
         )}
       </Books>
     </div>

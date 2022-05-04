@@ -1,5 +1,6 @@
 import { BookCollectionTypes } from '../bookCollection/bookCollection.types';
 import { v4 as uuid } from 'uuid';
+import { toggleModal } from '../modal/modal.actions';
 
 export const addBookToCollection = (collectionId, bookId) => (dispatch) => {
   try {
@@ -28,6 +29,21 @@ export const addBooksToCollection = (collectionId, bookIds) => (dispatch) => {
         bookIds: bookIds,
       },
     });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+export const addBookToCollections = (bookId, collectionIds) => (dispatch) => {
+  try {
+    dispatch({
+      type: BookCollectionTypes.ADD_BOOK_TO_COLLECTIONS,
+      payload: {
+        bookId: bookId,
+        collectionIds: collectionIds,
+      },
+    });
+    dispatch(toggleModal(false, null));
   } catch (err) {
     console.log(err);
   }

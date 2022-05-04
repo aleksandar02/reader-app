@@ -6,8 +6,16 @@ import Sidebar from './components/sidebar/Sidebar';
 import Collection from './components/collection/Collection';
 import CreateCollectionPage from './pages/CreateCollectionPage';
 import AddBooksToCollectionPage from './pages/AddBooksToCollectionPage';
+import AddBookFromLibrary from './components/book/AddBookFromLibrary';
+import AddBookForm from './components/book/AddBookForm';
+import BookDetailsPage from './pages/BookDetailsPage';
+import CollectionListModal from './components/collection/CollectionListModal';
+import { useSelector } from 'react-redux';
+import { selectShowModal } from './redux/modal/modal.reducer';
 
 function App() {
+  const showModal = useSelector((state) => selectShowModal(state));
+
   return (
     <div className='App'>
       <Router>
@@ -16,13 +24,19 @@ function App() {
           <Route path='/' element={<BookCollectionPage />}>
             <Route path=':collectionId' element={<Collection />} />
           </Route>
-          <Route path='/add-book' element={<AddBookPage />} />
-          <Route path='/create-collection' element={<CreateCollectionPage />} />
+          <Route path='book-details/:bookId' element={<BookDetailsPage />} />
+          <Route path='add-book' element={<AddBookPage />}>
+            <Route index element={<AddBookFromLibrary />} />
+            <Route path='manually' element={<AddBookForm />} />
+            <Route path='from-library' element={<AddBookFromLibrary />} />
+          </Route>
+          <Route path='create-collection' element={<CreateCollectionPage />} />
           <Route
-            path='/add-books/:collectionId'
+            path='add-books/:collectionId'
             element={<AddBooksToCollectionPage />}
           />
         </Routes>
+        {showModal && <CollectionListModal />}
       </Router>
     </div>
   );

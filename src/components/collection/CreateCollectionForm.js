@@ -12,7 +12,7 @@ const initialValues = {
 };
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string().required('Required field *'),
+  name: Yup.string().max(24, '24 characters max.').required('Required field *'),
 });
 
 const CreateCollectionForm = () => {

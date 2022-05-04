@@ -49,4 +49,30 @@ export const selectCollectionById = createSelector(
   }
 );
 
+export const selectCollectionsByIds = createSelector(
+  [selectCollections, (state, ids) => ids],
+  (collection, ids) => {
+    let selectedCollections = [];
+
+    ids.forEach((id) => {
+      selectedCollections = [...selectedCollections, collection.byId[id]];
+    });
+
+    return selectedCollections;
+  }
+);
+
+export const selectAllCollectionIds = createSelector(
+  [selectCollections],
+  (collection) => {
+    let allCollectionIds = [];
+
+    Object.values(collection.byId).forEach((collection) => {
+      allCollectionIds = [...allCollectionIds, collection.id];
+    });
+
+    return allCollectionIds;
+  }
+);
+
 export default collectionReducer;
