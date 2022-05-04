@@ -25,6 +25,24 @@ const collectionReducer = (state = initialState, action) => {
         byId: { ...state.byId, [action.payload.id]: { ...action.payload } },
       };
 
+    case CollectionActionTypes.REMOVE_COLLECTION: {
+      let filteredCollections = {};
+
+      Object.values(state.byId).forEach((collection) => {
+        if (collection.id != action.payload) {
+          filteredCollections = {
+            ...filteredCollections,
+            [collection.id]: { ...collection },
+          };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...filteredCollections },
+      };
+    }
+
     default:
       return state;
   }

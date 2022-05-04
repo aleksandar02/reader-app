@@ -23,7 +23,10 @@ const CreateCollectionForm = ({ setToggleAddCollection = null }) => {
     validationSchema,
     onSubmit: (values) => {
       dispatch(addCollection(values.name, values.description));
-      setToggleAddCollection(false);
+
+      if (setToggleAddCollection) {
+        setToggleAddCollection(false);
+      }
     },
   });
 

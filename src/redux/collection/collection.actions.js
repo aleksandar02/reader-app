@@ -1,4 +1,5 @@
 import { v4 as uuid } from 'uuid';
+import { removeBookCollectionsByCollectionId } from '../bookCollection/bookCollection.actions';
 import { CollectionActionTypes } from './collection.types';
 
 export const addCollection =
@@ -11,8 +12,6 @@ export const addCollection =
         description: description,
       };
 
-      // save to local storage
-
       dispatch({
         type: CollectionActionTypes.ADD_COLLECTION,
         payload: newCollection,
@@ -21,3 +20,11 @@ export const addCollection =
       console.log(err);
     }
   };
+
+export const removeCollection = (collectionId) => (dispatch) => {
+  dispatch({
+    type: CollectionActionTypes.REMOVE_COLLECTION,
+    payload: collectionId,
+  });
+  dispatch(removeBookCollectionsByCollectionId(collectionId));
+};

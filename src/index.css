@@ -148,6 +148,12 @@ p {
   color: #00C2A1;
 }
 
+.btn-red {
+  background: #f93154;
+  border-color: #f93154;
+  color: #fff;
+}
+
 .btn-to-read {
   background: #e2e8f0;
   color: #9385a1;
@@ -198,6 +204,10 @@ p {
   border-bottom: 1px solid #dbe0e9;
   padding-bottom: 24px;
   margin-bottom: 24px;
+}
+
+.header .btn-red {
+  margin-left: 12px;
 }
 
 .header .header-info h1 {

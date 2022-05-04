@@ -127,6 +127,24 @@ const bookCollectionReducer = (state = initialState, action) => {
       };
     }
 
+    case BookCollectionTypes.REMOVE_BOOK_COLLECTIONS_BY_COLLECTION_ID: {
+      let filteredBookCollections = {};
+
+      Object.values(state.byId).forEach((bookCollection) => {
+        if (bookCollection.collectionId != action.payload) {
+          filteredBookCollections = {
+            ...filteredBookCollections,
+            [bookCollection.id]: { ...bookCollection },
+          };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...filteredBookCollections },
+      };
+    }
+
     default:
       return state;
   }
