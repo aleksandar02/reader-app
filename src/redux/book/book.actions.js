@@ -1,29 +1,39 @@
-import { v4 as uuid } from 'uuid';
 import {
   addBookToCollection,
+  addBookToCollections,
   removeBookFromCollection,
 } from '../bookCollection/bookCollection.actions';
 import { BookActionTypes } from './book.types';
 
-export const markBookAsDone = (bookId) => (dispatch) => {
+export const changeBookStatus = (bookId, status) => (dispatch) => {
   try {
     dispatch({
-      type: BookActionTypes.MARK_BOOK_AS_DONE,
-      payload: bookId,
+      type: BookActionTypes.CHANGE_BOOK_STATUS,
+      payload: {
+        bookId: bookId,
+        status: status,
+      },
     });
-    dispatch(addBookToCollection('completedCollection', bookId));
+
+    if (status == 3) {
+      dispatch(addBookToCollection('completedCollection', bookId));
+    } else {
+      dispatch(removeBookFromCollection('completedCollection', bookId));
+    }
   } catch (err) {
     console.log(err);
   }
 };
 
-export const markBookAsUndone = (bookId) => (dispatch) => {
+export const saveBook = (book, collectionIds) => (dispatch) => {
   try {
     dispatch({
-      type: BookActionTypes.MARK_BOOK_AS_UNDONE,
-      payload: bookId,
+      type: BookActionTypes.SAVE_BOOK,
+      payload: book,
     });
-    dispatch(removeBookFromCollection('completedCollection', bookId));
+    if (collectionIds.length > 0) {
+      dispatch(addBookToCollections(book.id, collectionIds));
+    }
   } catch (err) {
     console.log(err);
   }

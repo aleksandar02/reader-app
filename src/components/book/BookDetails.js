@@ -1,25 +1,16 @@
+import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  markBookAsDone,
-  markBookAsUndone,
-} from '../../redux/book/book.actions';
+import { changeBookStatus } from '../../redux/book/book.actions';
 import Button from '../button/Button';
 
 const BookDetails = ({ book, toggleModal }) => {
   const dispatch = useDispatch();
+  const [bookStatus, setBookStatus] = useState(book.status);
 
-  let buttonText = 'Mark as done';
-
-  if (book.status == 2) {
-    buttonText = 'Mark as undone';
-  }
-
-  const changeBookStatus = (bookId, status) => {
-    if (status == 1) {
-      dispatch(markBookAsDone(bookId));
-    } else if (status == 2) {
-      dispatch(markBookAsUndone(bookId));
-    }
+  const handleChange = (bookId, status) => {
+    dispatch(changeBookStatus(bookId, status));
+    setBookStatus(status);
   };
 
   return (
@@ -32,12 +23,20 @@ const BookDetails = ({ book, toggleModal }) => {
         <h3>{book.author}</h3>
       </div>
       <div className='book-details-actions'>
-        <Button
-          handleOnClick={() => changeBookStatus(book.id, book.status)}
-          buttonText={buttonText}
-          type='button'
-          cssStyle='btn btn-small btn-default'
-        />
+        <FormControl>
+          <InputLabel id='bookStatus'>Book status</InputLabel>
+          <Select
+            labelId='bookStatus'
+            id='bookStatus'
+            value={bookStatus}
+            label='Book status'
+            onChange={(e) => handleChange(book.id, e.target.value)}
+          >
+            <MenuItem value={1}>To Read</MenuItem>
+            <MenuItem value={2}>Reading</MenuItem>
+            <MenuItem value={3}>Done</MenuItem>
+          </Select>
+        </FormControl>
         <Button
           handleOnClick={toggleModal}
           buttonText='Add to Collection'

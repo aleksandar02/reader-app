@@ -1,6 +1,11 @@
 import CollectionListItem from './CollectionListItem';
 
-const CollectionList = ({ collectionsToShow, handleOnChange, selectedIds }) => {
+const CollectionList = ({
+  collectionsToShow,
+  handleOnChange,
+  selectedIds,
+  cssClass = '',
+}) => {
   return (
     <div className='collection-list'>
       {collectionsToShow.map((collection) => (
@@ -9,6 +14,7 @@ const CollectionList = ({ collectionsToShow, handleOnChange, selectedIds }) => {
           collection={collection}
           handleOnChange={handleOnChange}
           selectedIds={selectedIds}
+          cssClass={cssClass}
         />
       ))}
     </div>

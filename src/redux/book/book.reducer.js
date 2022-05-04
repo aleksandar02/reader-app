@@ -17,7 +17,7 @@ const initialState = {
       author: 'F. Skot Fitzgerald',
       isbn: 'VTYVGFFDF2',
       cover_i: 8432047,
-      status: 2,
+      status: 3,
     },
     'book3': {
       id: 'book3',
@@ -33,7 +33,7 @@ const initialState = {
       author: 'Ben Jonson',
       isbn: 'JVDVGASCF2',
       cover_i: 7463992,
-      status: 2,
+      status: 3,
     },
     'book5': {
       id: 'book5',
@@ -48,6 +48,27 @@ const initialState = {
 
 const bookReducer = (state = initialState, action) => {
   switch (action.type) {
+    case BookActionTypes.SAVE_BOOK:
+      return {
+        ...state,
+        byId: { ...state.byId, [action.payload.id]: { ...action.payload } },
+      };
+
+    case BookActionTypes.CHANGE_BOOK_STATUS: {
+      let updatedBook = {};
+
+      Object.values(state.byId).forEach((book) => {
+        if (book.id == action.payload.bookId) {
+          updatedBook = { ...book, status: action.payload.status };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...state.byId, [action.payload.bookId]: { ...updatedBook } },
+      };
+    }
+
     case BookActionTypes.MARK_BOOK_AS_DONE: {
       let updatedBook = {};
 

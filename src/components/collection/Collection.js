@@ -66,7 +66,8 @@ const Collection = () => {
           ))
         ) : (
           <p>
-            No books to show. <Link to='/add-book'>Add new book.</Link>
+            No books to show.{' '}
+            <Link to={`add-books/${collection.id}`}>Add Books.</Link>
           </p>
         )}
       </Books>

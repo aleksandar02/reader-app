@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { BiPlus } from 'react-icons/bi';
 
 const Sidebar = () => {
   const collections = useSelector((state) => state.collection.byId);
@@ -19,7 +20,8 @@ const Sidebar = () => {
         ))}
         <li>
           <NavLink activeclassname='active' to='create-collection'>
-            Create collection
+            <BiPlus />
+            <span className='link-name'>Create collection</span>
           </NavLink>
         </li>
       </ul>

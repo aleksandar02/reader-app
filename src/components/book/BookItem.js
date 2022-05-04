@@ -1,3 +1,5 @@
+import Button from '../button/Button';
+
 const BookItem = ({
   book,
   canSelectBook = false,
@@ -15,6 +17,20 @@ const BookItem = ({
       ? book.title.substring(0, 24).concat('...')
       : book.title;
 
+  let bookStatusBtn = (
+    <Button cssStyle='btn btn-small btn-to-read' buttonText='To Read' />
+  );
+
+  if (book.status == 2) {
+    bookStatusBtn = (
+      <Button cssStyle='btn btn-small btn-reading' buttonText='Reading' />
+    );
+  } else if (book.status == 3) {
+    bookStatusBtn = (
+      <Button cssStyle='btn btn-small btn-done' buttonText='Done' />
+    );
+  }
+
   return (
     <div
       className={`book-item ${selectedBookCssClass}`}
@@ -25,12 +41,20 @@ const BookItem = ({
       }
     >
       <div className='book-item-details'>
-        <img
-          src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
-        />
+        {book.cover_i ? (
+          <img
+            src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
+          />
+        ) : (
+          <div className='img-placeholder'>
+            <p>{book.title} cover</p>
+          </div>
+        )}
+
         <div className='book-item-details-info'>
           <h3>{title}</h3>
           <p>{book.author}</p>
+          {bookStatusBtn}
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ const validationSchema = Yup.object().shape({
   name: Yup.string().max(24, '24 characters max.').required('Required field *'),
 });
 
-const CreateCollectionForm = () => {
+const CreateCollectionForm = ({ setToggleAddCollection = null }) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -23,6 +23,7 @@ const CreateCollectionForm = () => {
     validationSchema,
     onSubmit: (values) => {
       dispatch(addCollection(values.name, values.description));
+      setToggleAddCollection(false);
     },
   });
 

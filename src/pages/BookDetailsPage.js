@@ -7,6 +7,7 @@ import NoteItem from '../components/note/NoteItem';
 import { selectBookById } from '../redux/book/book.reducer';
 import { toggleModal } from '../redux/modal/modal.actions';
 import { selectAllNotes } from '../redux/note/note.reducer';
+import Header from '../components/header/Header';
 
 const BookDetailsPage = () => {
   const { bookId } = useParams();
@@ -15,10 +16,12 @@ const BookDetailsPage = () => {
   const book = useSelector((state) => selectBookById(state.book, bookId));
   const notes = useSelector((state) => selectAllNotes(state.note, book.id));
 
-  console.log(notes);
-
   return (
     <div className='main-section'>
+      <Header
+        title='Book Details'
+        subtitle='Write notes on book you are reading.'
+      />
       <div className='book-details-content'>
         <BookDetails
           book={book}

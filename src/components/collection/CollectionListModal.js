@@ -12,12 +12,16 @@ import {
   selectCollectionsByIds,
 } from '../../redux/collection/collection.reducer';
 import { selectCollectionIdsByBookId } from '../../redux/bookCollection/bookCollection.reducer';
+import CreateCollectionForm from '../collection/CreateCollectionForm';
+import { BiPlus } from 'react-icons/bi';
+import { BiMinus } from 'react-icons/bi';
 
 const CollectionListModal = () => {
   const dispatch = useDispatch();
 
   const book = useSelector((state) => selectModalData(state));
   const [selectedIds, setSelectedIds] = useState([]);
+  const [toggleAddCollection, setToggleAddCollection] = useState(false);
 
   // Select All collection Ids
   const allCollectionIds = useSelector((state) =>
@@ -59,6 +63,22 @@ const CollectionListModal = () => {
     dispatch(addBookToCollections(bookId, selectedIds));
   };
 
+  let toggleAddCollectionText = (
+    <span>
+      <BiPlus />
+      Add collection
+    </span>
+  );
+
+  if (toggleAddCollection) {
+    toggleAddCollectionText = (
+      <span>
+        <BiMinus />
+        Close collection
+      </span>
+    );
+  }
+
   return (
     <Modal
       title='Collections'
@@ -70,6 +90,20 @@ const CollectionListModal = () => {
         handleOnChange={handleOnChange}
         selectedIds={selectedIds}
       />
+      <p
+        className='toggleAddCollection'
+        onClick={() => setToggleAddCollection(!toggleAddCollection)}
+      >
+        {toggleAddCollectionText}
+      </p>
+      {toggleAddCollection && (
+        <div className='modal-add-collection'>
+          <h3>Add New Collection</h3>
+          <CreateCollectionForm
+            setToggleAddCollection={setToggleAddCollection}
+          />
+        </div>
+      )}
       <div className='align-right'>
         <Button
           type='button'

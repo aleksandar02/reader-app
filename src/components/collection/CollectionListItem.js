@@ -1,6 +1,11 @@
 import { BiPlus } from 'react-icons/bi';
 
-const CollectionListItem = ({ collection, handleOnChange, selectedIds }) => {
+const CollectionListItem = ({
+  collection,
+  handleOnChange,
+  selectedIds,
+  cssClass,
+}) => {
   let selectedCollectionCssClass = '';
 
   if (selectedIds && selectedIds.includes(collection.id)) {
@@ -9,7 +14,7 @@ const CollectionListItem = ({ collection, handleOnChange, selectedIds }) => {
 
   return (
     <div
-      className={`collection-list-item ${selectedCollectionCssClass}`}
+      className={`collection-list-item ${selectedCollectionCssClass} ${cssClass}`}
       onClick={() => handleOnChange(collection.id)}
     >
       <p>{collection.name}</p>
