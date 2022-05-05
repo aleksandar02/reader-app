@@ -1,3 +1,5 @@
 export const NoteActionTypes = {
   ADD_NOTE: 'ADD_NOTE',
+  REMOVE_NOTE: 'REMOVE_NOTE',
+  REMOVE_BOOK_NOTES: 'REMOVE_BOOK_NOTES',
 };

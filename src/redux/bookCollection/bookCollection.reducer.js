@@ -127,11 +127,29 @@ const bookCollectionReducer = (state = initialState, action) => {
       };
     }
 
-    case BookCollectionTypes.REMOVE_BOOK_COLLECTIONS_BY_COLLECTION_ID: {
+    case BookCollectionTypes.REMOVE_COLLECTION_FROM_BOOK_COLLECTIONS: {
       let filteredBookCollections = {};
 
       Object.values(state.byId).forEach((bookCollection) => {
         if (bookCollection.collectionId != action.payload) {
+          filteredBookCollections = {
+            ...filteredBookCollections,
+            [bookCollection.id]: { ...bookCollection },
+          };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...filteredBookCollections },
+      };
+    }
+
+    case BookCollectionTypes.REMOVE_BOOK_FROM_COLLECTIONS: {
+      let filteredBookCollections = {};
+
+      Object.values(state.byId).forEach((bookCollection) => {
+        if (bookCollection.bookId != action.payload) {
           filteredBookCollections = {
             ...filteredBookCollections,
             [bookCollection.id]: { ...bookCollection },

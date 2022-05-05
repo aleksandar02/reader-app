@@ -19,6 +19,8 @@ const AddBookPage = () => {
     setSelectedBook(book);
   };
 
+  console.log(initialValues);
+
   return (
     <div className='main-section'>
       <Header

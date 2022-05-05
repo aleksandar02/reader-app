@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import BookDetails from '../components/book/BookDetails';
 import AddNote from '../components/note/AddNote';
 import Notes from '../components/note/Notes';
@@ -8,10 +8,13 @@ import { selectBookById } from '../redux/book/book.reducer';
 import { toggleModal } from '../redux/modal/modal.actions';
 import { selectAllNotes } from '../redux/note/note.reducer';
 import Header from '../components/header/Header';
+import Button from '../components/button/Button';
+import { deleteBook } from '../redux/book/book.actions';
 
 const BookDetailsPage = () => {
   const { bookId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const book = useSelector((state) => selectBookById(state.book, bookId));
   const notes = useSelector((state) => selectAllNotes(state.note, book.id));
@@ -21,7 +24,14 @@ const BookDetailsPage = () => {
       <Header
         title='Book Details'
         subtitle='Write notes on book you are reading.'
-      />
+      >
+        <Button
+          type='button'
+          handleOnClick={() => dispatch(deleteBook(book.id, navigate))}
+          cssStyle='btn btn-red'
+          buttonText='Delete Book'
+        />
+      </Header>
       <div className='book-details-content'>
         <BookDetails
           book={book}
@@ -30,7 +40,9 @@ const BookDetailsPage = () => {
         <div className='notes'>
           <AddNote book={book} />
           <Notes>
-            <h2>My Notes</h2>
+            <h2>
+              My Notes <span>({notes.length})</span>
+            </h2>
             {notes.length > 0 ? (
               notes.map((note, idx) => (
                 <NoteItem key={note.id} note={note} noteNumber={idx} />

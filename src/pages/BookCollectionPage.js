@@ -1,6 +1,6 @@
 import Collection from '../components/collection/Collection';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, Navigate } from 'react-router-dom';
+import { Link, useParams, Navigate, useNavigate } from 'react-router-dom';
 import { selectBooksByIds } from '../redux/book/book.reducer';
 import { selectBookIdsByCollectionId } from '../redux/bookCollection/bookCollection.reducer';
 import { selectCollectionById } from '../redux/collection/collection.reducer';
@@ -14,6 +14,7 @@ const BookCollectionPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const { collectionId } = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const collection = useSelector((state) =>
     selectCollectionById(state.collection, collectionId)
@@ -35,6 +36,10 @@ const BookCollectionPage = () => {
 
   let deleteCollectionButton = null;
 
+  if (!collection) {
+    return <Navigate to='/' />;
+  }
+
   if (
     collection.id != 'defaultCollection' &&
     collection.id != 'completedCollection'
@@ -43,7 +48,9 @@ const BookCollectionPage = () => {
       <Button
         cssStyle='btn btn-red'
         buttonText='Delete Collection'
-        handleOnClick={() => dispatch(removeCollection(collection.id))}
+        handleOnClick={() =>
+          dispatch(removeCollection(collection.id, navigate))
+        }
       />
     );
   }
@@ -66,8 +73,8 @@ const BookCollectionPage = () => {
           placeholderText='Search collection...'
           handleChange={setSearchValue}
         />
-        {collectionId == 'defaultCollection' ||
-        collectionId == 'completedCollection' ? null : (
+        {collection.id == 'defaultCollection' ||
+        collection.id == 'completedCollection' ? null : (
           <Link to={`add-books/${collection.id}`} className='btn btn-default'>
             Add Books to Collection
           </Link>

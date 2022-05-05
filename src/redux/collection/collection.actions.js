@@ -1,5 +1,5 @@
 import { v4 as uuid } from 'uuid';
-import { removeBookCollectionsByCollectionId } from '../bookCollection/bookCollection.actions';
+import { removeCollectionFromBookCollections } from '../bookCollection/bookCollection.actions';
 import { CollectionActionTypes } from './collection.types';
 
 export const addCollection =
@@ -21,10 +21,11 @@ export const addCollection =
     }
   };
 
-export const removeCollection = (collectionId) => (dispatch) => {
+export const removeCollection = (collectionId, navigate) => (dispatch) => {
   dispatch({
     type: CollectionActionTypes.REMOVE_COLLECTION,
     payload: collectionId,
   });
-  dispatch(removeBookCollectionsByCollectionId(collectionId));
+  dispatch(removeCollectionFromBookCollections(collectionId));
+  navigate('/');
 };

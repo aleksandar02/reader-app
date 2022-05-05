@@ -47,10 +47,18 @@ export const removeBookFromCollection =
     });
   };
 
-export const removeBookCollectionsByCollectionId =
+export const removeBookFromCollections = (bookId) => (dispatch) => {
+  dispatch({
+    type: BookCollectionTypes.REMOVE_BOOK_FROM_COLLECTIONS,
+    payload: bookId,
+  });
+};
+
+// remove collection
+export const removeCollectionFromBookCollections =
   (collectionId) => (dispatch) => {
     dispatch({
-      type: BookCollectionTypes.REMOVE_BOOK_COLLECTIONS_BY_COLLECTION_ID,
+      type: BookCollectionTypes.REMOVE_COLLECTION_FROM_BOOK_COLLECTIONS,
       payload: collectionId,
     });
   };

@@ -22,6 +22,36 @@ export const noteReducer = (state = initialState, action) => {
       };
     }
 
+    case NoteActionTypes.REMOVE_NOTE: {
+      let filteredNotes = {};
+
+      Object.values(state.byId).forEach((note) => {
+        if (note.id != action.payload) {
+          filteredNotes = { ...filteredNotes, [note.id]: { ...note } };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...filteredNotes },
+      };
+    }
+
+    case NoteActionTypes.REMOVE_BOOK_NOTES: {
+      let filteredNotes = {};
+
+      Object.values(state.byId).forEach((note) => {
+        if (note.bookId != action.payload) {
+          filteredNotes = { ...filteredNotes, [note.id]: { ...note } };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...filteredNotes },
+      };
+    }
+
     default:
       return state;
   }

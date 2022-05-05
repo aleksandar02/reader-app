@@ -104,7 +104,7 @@ p {
 
 .btn {
   text-decoration: none;
-  padding: 12px 16px;
+  padding: 12px 14px;
   border: 1px solid;
   border-radius: 6px;
   cursor: pointer;
@@ -124,6 +124,12 @@ p {
   background: #D1E3EB;
   border-color: #D1E3EB;
   color: #8d809b;
+}
+
+.btn-default:hover {
+  background: #c6d8e0;
+  border-color: #c6d8e0;
+   
 }
 
 .btn-disabled {
@@ -154,19 +160,26 @@ p {
   color: #fff;
 }
 
-.btn-to-read {
+.status-label {
+  padding: 6px 10px;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.status-label.to-read {
   background: #e2e8f0;
   color: #9385a1;
   border: 1px solid #EAF4FF;
 }
 
-.btn-reading {
+.status-label.reading {
   background: #ecec82;
   color: #a5a50c;
   border: 1px solid #ffff3f;
 }
 
-.btn-done {
+.status-label.done {
   background: #00f18d;
   color: #069968;
   border: 1px solid #02FFD5;
@@ -231,7 +244,7 @@ p {
 .search-container {
   background: #fff;
   width: 40%;
-  padding: 8px 12px;
+  padding: 7px 12px;
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -276,9 +289,55 @@ p {
   padding: 32px 20px;
   border-radius: 6px;
   transition: box-shadow 400ms ease, border 250ms ease, background 350ms ease;
-  cursor: pointer;
   height: 100%;
   border: 3px solid transparent;
+}
+
+.book-item {
+  position: relative;
+  z-index: 4;
+}
+
+.remove-book-button,
+.remove-note-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 5;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 350ms ease;
+  cursor: pointer;
+  border-radius: 3px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.remove-note-button {
+  top: 12px;
+  right: 12px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.remove-note-button svg {
+  font-size: 22px;
+}
+
+.remove-book-button:hover,
+.remove-note-button:hover {
+  background: #F1F4F9;
+}
+
+.remove-book-button svg {
+  font-size: 20px;
+}
+
+.book-item:hover .remove-book-button {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .book-preview {
@@ -287,6 +346,7 @@ p {
 
 a {
   text-decoration: none;
+  display: inline-block;
 }
 
 .selected-book {
@@ -306,6 +366,7 @@ a {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   text-align: center;
 }
 
@@ -440,11 +501,23 @@ a {
   margin-bottom: 16px;
 }
 
+.notes-container h2 span {
+  font-size: 16px;
+  color: #9385a1;
+  font-weight: 500;
+}
+
 .note-item {
   background: #fff;
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 12px;
+  position: relative;
+}
+
+.note-item:hover .remove-note-button {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .note-item p {
@@ -461,7 +534,7 @@ a {
 .modal {
   position: absolute;
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
   top: 0;
   left: 0;
   background: rgba(0, 0, 0, 0.7);

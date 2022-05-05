@@ -1,6 +1,5 @@
 import Books from '../book/Books';
 import BookItem from '../book/BookItem';
-import { Link } from 'react-router-dom';
 
 const Collection = ({ filteredBooks, collection }) => {
   return (
@@ -8,9 +7,7 @@ const Collection = ({ filteredBooks, collection }) => {
       <Books>
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book) => (
-            <Link key={book.id} to={`/book-details/${book.id}`}>
-              <BookItem book={book} />
-            </Link>
+            <BookItem key={book.id} book={book} collectionId={collection.id} />
           ))
         ) : (
           <p>No books to show.</p>

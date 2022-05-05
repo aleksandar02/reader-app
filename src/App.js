@@ -14,6 +14,12 @@ import { selectShowModal } from './redux/modal/modal.reducer';
 function App() {
   const showModal = useSelector((state) => selectShowModal(state));
 
+  if (showModal) {
+    document.body.style.overflow = 'hidden';
+  } else {
+    document.body.style.overflow = 'auto';
+  }
+
   return (
     <div className='App'>
       <Router>

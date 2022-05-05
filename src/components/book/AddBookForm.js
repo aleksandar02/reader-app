@@ -39,18 +39,22 @@ const AddBookForm = ({
     initialValues: { ...initialValues },
     validationSchema,
     enableReinitialize: true,
-    onSubmit: async (values) => {
+    onSubmit: async (values, formikBag) => {
       let bookToSave;
       let collectionIds = selectedIds;
 
+      // If book is selected -> extract values
+      // else -> fetch book by title
       if (selectedBook) {
         bookToSave = {
           ...selectedBook,
           status: values.status,
         };
       } else {
+        let sanitizedSearchValue = values.title.trim().replaceAll(' ', '+');
+
         const book = await fetchBook(
-          `https://openlibrary.org/search.json?title=${values.title.trim()}&limit=1`
+          `https://openlibrary.org/search.json?title=${sanitizedSearchValue}&limit=1`
         );
 
         bookToSave = {
@@ -67,10 +71,15 @@ const AddBookForm = ({
         collectionIds = [...collectionIds, 'completedCollection'];
       }
 
+      // Dispatch Save book action
       dispatch(saveBook(bookToSave, collectionIds));
+
+      // Reset values to default
       setInitialValues({ title: '', author: '', status: '' });
       setSelectedIds(['defaultCollection']);
       setSelectedBook(null);
+
+      formikBag.resetForm();
     },
   });
 

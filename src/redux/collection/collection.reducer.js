@@ -14,6 +14,11 @@ const initialState = {
       name: 'Completed books',
       description: 'All the books that you have read.',
     },
+    'favouritesCollection': {
+      id: 'favouritesCollection',
+      name: 'Favourites',
+      description: 'My favourite books.',
+    },
   },
 };
 
@@ -72,7 +77,7 @@ export const selectCustomCollections = createSelector(
 export const selectCollectionById = createSelector(
   [selectCollections, (state, id) => id],
   (collection, id) => {
-    if (id) {
+    if (collection.byId[id]) {
       return collection.byId[id];
     } else {
       return collection.byId['defaultCollection'];

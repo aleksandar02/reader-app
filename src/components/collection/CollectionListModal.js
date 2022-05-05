@@ -74,7 +74,7 @@ const CollectionListModal = () => {
     toggleAddCollectionText = (
       <span>
         <BiMinus />
-        Close collection
+        Close form
       </span>
     );
   }

@@ -2,7 +2,9 @@ import {
   addBookToCollection,
   addBookToCollections,
   removeBookFromCollection,
+  removeBookFromCollections,
 } from '../bookCollection/bookCollection.actions';
+import { removeBookNotes } from '../note/note.actions';
 import { BookActionTypes } from './book.types';
 
 export const changeBookStatus = (bookId, status) => (dispatch) => {
@@ -26,15 +28,21 @@ export const changeBookStatus = (bookId, status) => (dispatch) => {
 };
 
 export const saveBook = (book, collectionIds) => (dispatch) => {
-  try {
-    dispatch({
-      type: BookActionTypes.SAVE_BOOK,
-      payload: book,
-    });
-    if (collectionIds.length > 0) {
-      dispatch(addBookToCollections(book.id, collectionIds));
-    }
-  } catch (err) {
-    console.log(err);
+  dispatch({
+    type: BookActionTypes.SAVE_BOOK,
+    payload: book,
+  });
+  if (collectionIds.length > 0) {
+    dispatch(addBookToCollections(book.id, collectionIds));
   }
+};
+
+export const deleteBook = (bookId, navigate) => (dispatch) => {
+  dispatch({
+    type: BookActionTypes.DELETE_BOOK,
+    payload: bookId,
+  });
+  dispatch(removeBookFromCollections(bookId));
+  dispatch(removeBookNotes(bookId));
+  navigate('/');
 };

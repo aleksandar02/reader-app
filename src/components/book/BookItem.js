@@ -1,11 +1,19 @@
 import Button from '../button/Button';
+import { BiX } from 'react-icons/bi';
+import { useNavigate } from 'react-router-dom';
+import { removeBookFromCollection } from '../../redux/bookCollection/bookCollection.actions';
+import { useDispatch } from 'react-redux';
 
 const BookItem = ({
   book,
   canSelectBook = false,
   handleOnChange,
   selectedIds,
+  collectionId,
 }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   let selectedBookCssClass = '';
 
   if (selectedIds && selectedIds.includes(book.id)) {
@@ -18,16 +26,32 @@ const BookItem = ({
       : book.title;
 
   let bookStatusBtn = (
-    <Button cssStyle='btn btn-small btn-to-read' buttonText='To Read' />
+    <Button cssStyle='status-label to-read' buttonText='To Read' />
   );
 
   if (book.status == 2) {
     bookStatusBtn = (
-      <Button cssStyle='btn btn-small btn-reading' buttonText='Reading' />
+      <Button cssStyle='status-label reading' buttonText='Reading' />
     );
   } else if (book.status == 3) {
-    bookStatusBtn = (
-      <Button cssStyle='btn btn-small btn-done' buttonText='Done' />
+    bookStatusBtn = <Button cssStyle='status-label done' buttonText='Done' />;
+  }
+
+  let removeBookButton = null;
+
+  if (
+    collectionId != 'defaultCollection' &&
+    collectionId != 'completedCollection'
+  ) {
+    removeBookButton = (
+      <div
+        className='remove-book-button'
+        onClick={() =>
+          dispatch(removeBookFromCollection(collectionId, book.id))
+        }
+      >
+        <BiX />
+      </div>
     );
   }
 
@@ -40,7 +64,12 @@ const BookItem = ({
           : (e) => e.stopPropagation()
       }
     >
-      <div className='book-item-details'>
+      <div
+        className='book-item-details'
+        onClick={
+          !canSelectBook ? () => navigate(`/book-details/${book.id}`) : null
+        }
+      >
         {book.cover_i ? (
           <img
             src={`https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`}
@@ -57,6 +86,7 @@ const BookItem = ({
           {bookStatusBtn}
         </div>
       </div>
+      {removeBookButton}
     </div>
   );
 };

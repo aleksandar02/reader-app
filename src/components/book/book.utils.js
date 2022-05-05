@@ -18,3 +18,28 @@ export const fetchBook = async (url) => {
     return null;
   }
 };
+
+export const fetchBooks = async (url) => {
+  try {
+    const response = await fetch(url);
+    const data = await response.json();
+
+    let books = [];
+
+    data.docs.forEach((book) => {
+      const newBook = {
+        id: uuid(),
+        title: book.title,
+        author: book.author_name[0],
+        isbn: book.isbn[0],
+        cover_i: book.cover_i,
+      };
+
+      books = [...books, newBook];
+    });
+
+    return books;
+  } catch (err) {
+    return [];
+  }
+};

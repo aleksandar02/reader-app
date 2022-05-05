@@ -1,31 +1,33 @@
-import SearchBar from '../searchBar/SearchBar';
-
-import { fetchBook } from './book.utils';
+import { fetchBooks } from './book.utils';
 import { useEffect, useState } from 'react';
 import BookPreview from './BookPreview';
+import { Autocomplete, TextField } from '@mui/material';
 
 const SearchBook = ({ selectBook }) => {
   const [searchValue, setSearchValue] = useState('');
-  const [book, setBook] = useState(null);
+  const [selectedBook, setSelectedBook] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
       try {
-        if (searchValue.length > 0) {
-          const book = await fetchBook(
-            `https://openlibrary.org/search.json?title=${searchValue.trim()}&limit=1`
+        if (searchValue.length > 2) {
+          let sanitizedSearchValue = searchValue.trim().replaceAll(' ', '+');
+
+          const bookResults = await fetchBooks(
+            `https://openlibrary.org/search.json?title=${sanitizedSearchValue}&limit=10`
           );
 
-          if (book) {
-            setBook(book);
+          if (bookResults) {
+            setSearchResults(bookResults);
           }
         } else {
-          setBook(null);
+          setSearchResults([]);
         }
       } catch (err) {
-        setBook(null);
+        setSearchResults([]);
       }
-    }, 1000);
+    }, 500);
     return () => {
       clearTimeout(delayDebounceFn);
     };
@@ -33,14 +35,31 @@ const SearchBook = ({ selectBook }) => {
 
   return (
     <div className='search-book'>
-      <SearchBar
-        placeholderText='Search Open Library for a book...'
-        handleChange={setSearchValue}
-        cssClass='full-width'
+      <Autocomplete
+        disablePortal
+        id='search-book-autocomplete'
+        getOptionLabel={(option) => option.title}
+        renderOption={(props, option) => {
+          return (
+            <li {...props} key={option.id}>
+              {option.title}
+            </li>
+          );
+        }}
+        options={searchResults}
+        renderInput={(params) => (
+          <TextField {...params} label='Search Open Library for books...' />
+        )}
+        onInputChange={(e) => setSearchValue(e.target.value)}
+        onChange={(e, newValue) => {
+          setSelectedBook(newValue);
+        }}
       />
 
       <div className='book-preview-container'>
-        {book ? <BookPreview selectBook={selectBook} book={book} /> : null}
+        {selectedBook ? (
+          <BookPreview selectBook={selectBook} book={selectedBook} />
+        ) : null}
       </div>
     </div>
   );

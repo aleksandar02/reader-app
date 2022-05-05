@@ -54,6 +54,24 @@ const bookReducer = (state = initialState, action) => {
         byId: { ...state.byId, [action.payload.id]: { ...action.payload } },
       };
 
+    case BookActionTypes.DELETE_BOOK: {
+      let filteredBooks = {};
+
+      Object.values(state.byId).forEach((book) => {
+        if (book.id != action.payload) {
+          filteredBooks = {
+            ...filteredBooks,
+            [book.id]: { ...book },
+          };
+        }
+      });
+
+      return {
+        ...state,
+        byId: { ...filteredBooks },
+      };
+    }
+
     case BookActionTypes.CHANGE_BOOK_STATUS: {
       let updatedBook = {};
 
@@ -66,36 +84,6 @@ const bookReducer = (state = initialState, action) => {
       return {
         ...state,
         byId: { ...state.byId, [action.payload.bookId]: { ...updatedBook } },
-      };
-    }
-
-    case BookActionTypes.MARK_BOOK_AS_DONE: {
-      let updatedBook = {};
-
-      Object.values(state.byId).forEach((book) => {
-        if (book.id == action.payload) {
-          updatedBook = { ...book, status: 2 };
-        }
-      });
-
-      return {
-        ...state,
-        byId: { ...state.byId, [action.payload]: { ...updatedBook } },
-      };
-    }
-
-    case BookActionTypes.MARK_BOOK_AS_UNDONE: {
-      let updatedBook = {};
-
-      Object.values(state.byId).forEach((book) => {
-        if (book.id == action.payload) {
-          updatedBook = { ...book, status: 1 };
-        }
-      });
-
-      return {
-        ...state,
-        byId: { ...state.byId, [action.payload]: { ...updatedBook } },
       };
     }
 
