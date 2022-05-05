@@ -1,14 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
 import BookDetails from '../components/book/BookDetails';
 import AddNote from '../components/note/AddNote';
 import Notes from '../components/note/Notes';
 import NoteItem from '../components/note/NoteItem';
+import Header from '../components/header/Header';
+import Button from '../components/button/Button';
+
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { selectBookById } from '../redux/book/book.reducer';
 import { toggleModal } from '../redux/modal/modal.actions';
 import { selectAllNotes } from '../redux/note/note.reducer';
-import Header from '../components/header/Header';
-import Button from '../components/button/Button';
 import { deleteBook } from '../redux/book/book.actions';
 
 const BookDetailsPage = () => {

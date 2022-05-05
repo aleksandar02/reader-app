@@ -13,7 +13,7 @@ import CollectionList from '../collection/CollectionList';
 import { selectCustomCollections } from '../../redux/collection/collection.reducer';
 import { useState } from 'react';
 import { saveBook } from '../../redux/book/book.actions';
-import { fetchBook, fetchBookByTitleAndAuthor } from './book.utils';
+import { fetchBook } from './book.utils';
 import { v4 as uuid } from 'uuid';
 
 const validationSchema = Yup.object().shape({
@@ -32,7 +32,9 @@ const AddBookForm = ({
   setInitialValues,
   setSelectedBook,
 }) => {
-  const [selectedIds, setSelectedIds] = useState(['defaultCollection']);
+  const [selectedCollectionIds, setSelectedCollectionIds] = useState([
+    'defaultCollection',
+  ]);
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -41,20 +43,23 @@ const AddBookForm = ({
     enableReinitialize: true,
     onSubmit: async (values, formikBag) => {
       let bookToSave;
-      let collectionIds = selectedIds;
+      let collectionIds = selectedCollectionIds;
 
       // If book is selected -> extract values
       // else -> fetch book by title
-      if (selectedBook) {
+      if (selectedBook && selectedBook.title == values.title) {
         bookToSave = {
           ...selectedBook,
+          title: values.title,
+          author: values.author,
           status: values.status,
         };
       } else {
-        let sanitizedSearchValue = values.title.trim().replaceAll(' ', '+');
+        let sanitizedSearchTerm = values.title.trim().replaceAll(' ', '+');
 
+        // Fetching book from API
         const book = await fetchBook(
-          `https://openlibrary.org/search.json?title=${sanitizedSearchValue}&limit=1`
+          `https://openlibrary.org/search.json?title=${sanitizedSearchTerm}&limit=1`
         );
 
         bookToSave = {
@@ -67,6 +72,7 @@ const AddBookForm = ({
         };
       }
 
+      // Add book to 'Completed' collection if book status is 'Done'
       if (values.status == 3) {
         collectionIds = [...collectionIds, 'completedCollection'];
       }
@@ -76,28 +82,31 @@ const AddBookForm = ({
 
       // Reset values to default
       setInitialValues({ title: '', author: '', status: '' });
-      setSelectedIds(['defaultCollection']);
+      setSelectedCollectionIds(['defaultCollection']);
       setSelectedBook(null);
 
       formikBag.resetForm();
     },
   });
 
-  const collectionsToShow = useSelector((state) =>
+  const customCollections = useSelector((state) =>
     selectCustomCollections(state.collection)
   );
 
-  const handleOnChange = (id) => {
-    const exists = selectedIds.find((collectionId) => collectionId == id);
+  // Saves selected collection ids
+  const saveSelectedCollectionId = (id) => {
+    const exists = selectedCollectionIds.find(
+      (collectionId) => collectionId == id
+    );
 
     if (exists) {
-      const filteredCollectionIds = selectedIds.filter(
+      const filteredCollectionIds = selectedCollectionIds.filter(
         (collectionId) => collectionId != id
       );
 
-      setSelectedIds([...filteredCollectionIds]);
+      setSelectedCollectionIds([...filteredCollectionIds]);
     } else {
-      setSelectedIds((currentState) => [...currentState, id]);
+      setSelectedCollectionIds((currentState) => [...currentState, id]);
     }
   };
 
@@ -161,9 +170,9 @@ const AddBookForm = ({
       <div className='add-book-form-collections'>
         <p>Add to collection:</p>
         <CollectionList
-          collectionsToShow={collectionsToShow}
-          handleOnChange={handleOnChange}
-          selectedIds={selectedIds}
+          collectionsToShow={customCollections}
+          saveSelectedCollectionId={saveSelectedCollectionId}
+          selectedIds={selectedCollectionIds}
           cssClass='white-bg'
         />
       </div>

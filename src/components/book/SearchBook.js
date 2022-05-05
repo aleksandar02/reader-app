@@ -3,19 +3,20 @@ import { useEffect, useState } from 'react';
 import BookPreview from './BookPreview';
 import { Autocomplete, TextField } from '@mui/material';
 
-const SearchBook = ({ selectBook }) => {
-  const [searchValue, setSearchValue] = useState('');
+const SearchBook = ({ handleSelectBook }) => {
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedBook, setSelectedBook] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
 
   useEffect(() => {
+    // Search for a book after the user has stopped typing
     const delayDebounceFn = setTimeout(async () => {
       try {
-        if (searchValue.length > 2) {
-          let sanitizedSearchValue = searchValue.trim().replaceAll(' ', '+');
+        if (searchTerm.length > 2) {
+          let sanitizedSearchTerm = searchTerm.trim().replaceAll(' ', '+');
 
           const bookResults = await fetchBooks(
-            `https://openlibrary.org/search.json?title=${sanitizedSearchValue}&limit=10`
+            `https://openlibrary.org/search.json?title=${sanitizedSearchTerm}&limit=10`
           );
 
           if (bookResults) {
@@ -31,7 +32,7 @@ const SearchBook = ({ selectBook }) => {
     return () => {
       clearTimeout(delayDebounceFn);
     };
-  }, [searchValue]);
+  }, [searchTerm]);
 
   return (
     <div className='search-book'>
@@ -50,7 +51,7 @@ const SearchBook = ({ selectBook }) => {
         renderInput={(params) => (
           <TextField {...params} label='Search Open Library for books...' />
         )}
-        onInputChange={(e) => setSearchValue(e.target.value)}
+        onInputChange={(e) => setSearchTerm(e.target.value)}
         onChange={(e, newValue) => {
           setSelectedBook(newValue);
         }}
@@ -58,7 +59,10 @@ const SearchBook = ({ selectBook }) => {
 
       <div className='book-preview-container'>
         {selectedBook ? (
-          <BookPreview selectBook={selectBook} book={selectedBook} />
+          <BookPreview
+            handleSelectBook={handleSelectBook}
+            book={selectedBook}
+          />
         ) : null}
       </div>
     </div>

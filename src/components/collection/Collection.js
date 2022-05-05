@@ -1,12 +1,12 @@
 import Books from '../book/Books';
 import BookItem from '../book/BookItem';
 
-const Collection = ({ filteredBooks, collection }) => {
+const Collection = ({ books, collection }) => {
   return (
     <div className='collection'>
       <Books>
-        {filteredBooks.length > 0 ? (
-          filteredBooks.map((book) => (
+        {books.length > 0 ? (
+          books.map((book) => (
             <BookItem key={book.id} book={book} collectionId={collection.id} />
           ))
         ) : (

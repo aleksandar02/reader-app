@@ -2,7 +2,7 @@ import CollectionListItem from './CollectionListItem';
 
 const CollectionList = ({
   collectionsToShow,
-  handleOnChange,
+  saveSelectedCollectionId,
   selectedIds,
   cssClass = '',
 }) => {
@@ -12,7 +12,7 @@ const CollectionList = ({
         <CollectionListItem
           key={collection.id}
           collection={collection}
-          handleOnChange={handleOnChange}
+          saveSelectedCollectionId={saveSelectedCollectionId}
           selectedIds={selectedIds}
           cssClass={cssClass}
         />

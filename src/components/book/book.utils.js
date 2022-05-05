@@ -1,5 +1,6 @@
 import { v4 as uuid } from 'uuid';
 
+// Fetch book from Open Library API by Title
 export const fetchBook = async (url) => {
   try {
     const response = await fetch(url);
@@ -19,6 +20,7 @@ export const fetchBook = async (url) => {
   }
 };
 
+// Fetch 10 books from Open Library API by Title
 export const fetchBooks = async (url) => {
   try {
     const response = await fetch(url);

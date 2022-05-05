@@ -1,13 +1,15 @@
+import Button from '../button/Button';
+
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeBookStatus } from '../../redux/book/book.actions';
-import Button from '../button/Button';
 
 const BookDetails = ({ book, toggleModal }) => {
   const dispatch = useDispatch();
   const [bookStatus, setBookStatus] = useState(book.status);
 
+  // Handle Change Book Status
   const handleChange = (bookId, status) => {
     dispatch(changeBookStatus(bookId, status));
     setBookStatus(status);

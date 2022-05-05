@@ -1,11 +1,12 @@
 import { createSelector } from 'reselect';
 import { BookCollectionTypes } from './bookCollection.types';
 import {
-  filterBookCollectionById,
-  getRemoveBookCollectionId,
+  filterBookCollectionsById,
+  getBookCollectionIdToRemove,
 } from './bookCollection.utils';
 import { v4 as uuid } from 'uuid';
 
+// Initial/Default state
 const initialState = {
   byId: {
     'bookCollections1': {
@@ -59,7 +60,7 @@ const bookCollectionReducer = (state = initialState, action) => {
         ...state,
         byId: {
           ...state.byId,
-          [action.payload.bookCollectionId]: { ...newBookCollectionItem },
+          [newBookCollectionItem.id]: { ...newBookCollectionItem },
         },
       };
     }
@@ -68,6 +69,7 @@ const bookCollectionReducer = (state = initialState, action) => {
       let bookCollections = {};
       const { collectionId, bookIds } = action.payload;
 
+      // Foreach Book Id create new Book Collection
       bookIds.forEach((bookId) => {
         const newBookCollection = {
           id: uuid(),
@@ -75,6 +77,7 @@ const bookCollectionReducer = (state = initialState, action) => {
           collectionId: collectionId,
         };
 
+        // Add New Book Collection to Book Collections
         bookCollections = {
           ...bookCollections,
           [newBookCollection.id]: { ...newBookCollection },
@@ -86,10 +89,12 @@ const bookCollectionReducer = (state = initialState, action) => {
         byId: { ...state.byId, ...bookCollections },
       };
     }
+
     case BookCollectionTypes.ADD_BOOK_TO_COLLECTIONS: {
       let bookCollections = {};
       const { bookId, collectionIds } = action.payload;
 
+      // Foreach Collection Id create new Book Collection
       collectionIds.forEach((collectionId) => {
         const newBookCollection = {
           id: uuid(),
@@ -97,6 +102,7 @@ const bookCollectionReducer = (state = initialState, action) => {
           collectionId: collectionId,
         };
 
+        // Add New Book Collection to Book Collections
         bookCollections = {
           ...bookCollections,
           [newBookCollection.id]: { ...newBookCollection },
@@ -110,26 +116,29 @@ const bookCollectionReducer = (state = initialState, action) => {
     }
 
     case BookCollectionTypes.REMOVE_BOOK_FROM_COLLECTION: {
-      let removeBookCollectionId = getRemoveBookCollectionId(
+      let bookCollectionIdToRemove = getBookCollectionIdToRemove(
         state.byId,
         action.payload.collectionId,
         action.payload.bookId
       );
 
-      let newBookCollection = filterBookCollectionById(
+      // Filter Book Collections by id
+      // i.e. Remove Book Collection by id
+      let newBookCollections = filterBookCollectionsById(
         state.byId,
-        removeBookCollectionId
+        bookCollectionIdToRemove
       );
 
       return {
         ...state,
-        byId: { ...newBookCollection },
+        byId: { ...newBookCollections },
       };
     }
 
     case BookCollectionTypes.REMOVE_COLLECTION_FROM_BOOK_COLLECTIONS: {
       let filteredBookCollections = {};
 
+      // Remove All Certain Collection Instances from Book Collections (by collection id)
       Object.values(state.byId).forEach((bookCollection) => {
         if (bookCollection.collectionId != action.payload) {
           filteredBookCollections = {
@@ -148,6 +157,8 @@ const bookCollectionReducer = (state = initialState, action) => {
     case BookCollectionTypes.REMOVE_BOOK_FROM_COLLECTIONS: {
       let filteredBookCollections = {};
 
+      // Remove All Book Instances from Book Collections (by book id)
+      // i.e. Remove Book from All Collections
       Object.values(state.byId).forEach((bookCollection) => {
         if (bookCollection.bookId != action.payload) {
           filteredBookCollections = {
@@ -170,6 +181,7 @@ const bookCollectionReducer = (state = initialState, action) => {
 
 const selectBookCollections = (state) => state;
 
+// Selector that gets Book ids that belong to certain Collection
 export const selectBookIdsByCollectionId = createSelector(
   [selectBookCollections, (state, collectionId) => collectionId],
   (bookCollection, collectionId) => {
@@ -183,21 +195,7 @@ export const selectBookIdsByCollectionId = createSelector(
   }
 );
 
-export const selectBookIdsInCollection = createSelector(
-  [selectBookCollections, (state, collectionId) => collectionId],
-  (bookCollection, collectionId) => {
-    let bookIds = [];
-
-    Object.values(bookCollection.byId).forEach((bookCollection) => {
-      if (bookCollection.collectionId == collectionId) {
-        bookIds = [...bookIds, bookCollection.bookId];
-      }
-    });
-
-    return bookIds;
-  }
-);
-
+// Selector that gets All Collection Ids that have certain Book
 export const selectCollectionIdsByBookId = createSelector(
   [selectBookCollections, (state, bookId) => bookId],
   (bookCollection, bookId) => {

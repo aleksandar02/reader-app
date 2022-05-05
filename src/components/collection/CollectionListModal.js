@@ -1,9 +1,11 @@
-import { useDispatch } from 'react-redux';
-import { addBookToCollections } from '../../redux/bookCollection/bookCollection.actions';
-import { toggleModal } from '../../redux/modal/modal.actions';
 import Button from '../button/Button';
 import Modal from '../modal/Modal';
 import CollectionList from './CollectionList';
+import CreateCollectionForm from '../collection/CreateCollectionForm';
+
+import { useDispatch } from 'react-redux';
+import { addBookToCollections } from '../../redux/bookCollection/bookCollection.actions';
+import { toggleModal } from '../../redux/modal/modal.actions';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectModalData } from '../../redux/modal/modal.reducer';
@@ -12,55 +14,59 @@ import {
   selectCollectionsByIds,
 } from '../../redux/collection/collection.reducer';
 import { selectCollectionIdsByBookId } from '../../redux/bookCollection/bookCollection.reducer';
-import CreateCollectionForm from '../collection/CreateCollectionForm';
 import { BiPlus } from 'react-icons/bi';
 import { BiMinus } from 'react-icons/bi';
 
 const CollectionListModal = () => {
   const dispatch = useDispatch();
 
-  const book = useSelector((state) => selectModalData(state));
-  const [selectedIds, setSelectedIds] = useState([]);
+  const [selectedCollectionIds, setSelectedCollectionIds] = useState([]);
   const [toggleAddCollection, setToggleAddCollection] = useState(false);
 
-  // Select All collection Ids
+  // Select Book
+  const book = useSelector((state) => selectModalData(state));
+
+  // Select all Collection Ids
   const allCollectionIds = useSelector((state) =>
     selectAllCollectionIds(state.collection)
   );
 
-  // Select collection ids that have bookId
+  // Select Collection Ids that have certain book
   const collectionIdsByBookId = useSelector((state) =>
     selectCollectionIdsByBookId(state.bookCollection, book.id)
   );
 
-  // Calculate ids that do not exist
-  const collectionIdsToShow = allCollectionIds.filter(function (obj) {
+  // Filter Collection Ids that do not have certain book
+  const filteredCollectionIds = allCollectionIds.filter(function (obj) {
     return (
       collectionIdsByBookId.indexOf(obj) == -1 && obj != 'completedCollection'
     );
   });
 
-  // * Select collections that do not have this book
+  // Select Collections that do not have this book (by )
   const collectionsToShow = useSelector((state) =>
-    selectCollectionsByIds(state.collection, collectionIdsToShow)
+    selectCollectionsByIds(state.collection, filteredCollectionIds)
   );
 
-  const handleOnChange = (id) => {
-    const exists = selectedIds.find((collectionId) => collectionId == id);
+  const saveSelectedCollectionId = (id) => {
+    const exists = selectedCollectionIds.find(
+      (collectionId) => collectionId == id
+    );
 
     if (exists) {
-      const filteredCollectionIds = selectedIds.filter(
+      const filteredCollectionIds = selectedCollectionIds.filter(
         (collectionId) => collectionId != id
       );
 
-      setSelectedIds([...filteredCollectionIds]);
+      setSelectedCollectionIds([...filteredCollectionIds]);
     } else {
-      setSelectedIds((currentState) => [...currentState, id]);
+      setSelectedCollectionIds((currentState) => [...currentState, id]);
     }
   };
 
+  // Save Book to selected Collections
   const saveToCollections = (bookId) => {
-    dispatch(addBookToCollections(bookId, selectedIds));
+    dispatch(addBookToCollections(bookId, selectedCollectionIds));
   };
 
   let toggleAddCollectionText = (
@@ -87,8 +93,8 @@ const CollectionListModal = () => {
     >
       <CollectionList
         collectionsToShow={collectionsToShow}
-        handleOnChange={handleOnChange}
-        selectedIds={selectedIds}
+        saveSelectedCollectionId={saveSelectedCollectionId}
+        selectedIds={selectedCollectionIds}
       />
       <p
         className='toggleAddCollection'
@@ -109,7 +115,7 @@ const CollectionListModal = () => {
           type='button'
           handleOnClick={() => saveToCollections(book.id)}
           cssStyle={`btn btn-blue ${
-            selectedIds.length == 0 ? 'btn-disabled' : ''
+            selectedCollectionIds.length == 0 ? 'btn-disabled' : ''
           }`}
           buttonText='Save'
         />

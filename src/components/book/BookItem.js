@@ -1,9 +1,9 @@
-import Button from '../button/Button';
+import StatusLabel from '../statusLabel/StatusLabel';
+
 import { BiX } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { removeBookFromCollection } from '../../redux/bookCollection/bookCollection.actions';
 import { useDispatch } from 'react-redux';
-import StatusLabel from '../statusLabel/StatusLabel';
 
 const BookItem = ({
   book,
@@ -22,8 +22,8 @@ const BookItem = ({
   }
 
   const title =
-    book.title.length > 24
-      ? book.title.substring(0, 24).concat('...')
+    book.title.length > 35
+      ? book.title.substring(0, 35).concat('...')
       : book.title;
 
   let statusLabel = (
@@ -40,6 +40,7 @@ const BookItem = ({
 
   let removeBookButton = null;
 
+  // Display removeBookButton only in custom collections
   if (
     collectionId != 'defaultCollection' &&
     collectionId != 'completedCollection' &&

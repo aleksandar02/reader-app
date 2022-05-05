@@ -1,6 +1,6 @@
 import Button from '../button/Button';
 
-const BookPreview = ({ book, selectBook }) => {
+const BookPreview = ({ book, handleSelectBook }) => {
   return (
     <div className='book-preview'>
       <div className='book-item-details'>
@@ -14,7 +14,7 @@ const BookPreview = ({ book, selectBook }) => {
       </div>
       <Button
         type='button'
-        handleOnClick={() => selectBook(book)}
+        handleOnClick={() => handleSelectBook(book)}
         cssStyle='btn btn-blue'
         buttonText='Select Book'
       />

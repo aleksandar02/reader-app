@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 import { BookActionTypes } from './book.types';
 
+// Initial/Default state
 const initialState = {
   byId: {
     'book1': {
@@ -57,6 +58,7 @@ const bookReducer = (state = initialState, action) => {
     case BookActionTypes.DELETE_BOOK: {
       let filteredBooks = {};
 
+      // Filter books by book id
       Object.values(state.byId).forEach((book) => {
         if (book.id != action.payload) {
           filteredBooks = {
@@ -75,6 +77,7 @@ const bookReducer = (state = initialState, action) => {
     case BookActionTypes.CHANGE_BOOK_STATUS: {
       let updatedBook = {};
 
+      // Update book status based on book id
       Object.values(state.byId).forEach((book) => {
         if (book.id == action.payload.bookId) {
           updatedBook = { ...book, status: action.payload.status };
@@ -83,7 +86,7 @@ const bookReducer = (state = initialState, action) => {
 
       return {
         ...state,
-        byId: { ...state.byId, [action.payload.bookId]: { ...updatedBook } },
+        byId: { ...state.byId, [updatedBook.id]: { ...updatedBook } },
       };
     }
 
@@ -94,17 +97,19 @@ const bookReducer = (state = initialState, action) => {
 
 const selectBooks = (state) => state;
 
+// Selector that gets book by id
 export const selectBookById = createSelector(
   [selectBooks, (state, id) => id],
   (book, id) => book.byId[id]
 );
 
+// Selector that gets books by array of book ids
 export const selectBooksByIds = createSelector(
-  [selectBooks, (state, ids) => ids],
-  (book, ids) => {
+  [selectBooks, (state, bookIds) => bookIds],
+  (book, bookIds) => {
     let selectedBooks = [];
 
-    ids.forEach((id) => {
+    bookIds.forEach((id) => {
       selectedBooks = [...selectedBooks, book.byId[id]];
     });
 
@@ -112,6 +117,7 @@ export const selectBooksByIds = createSelector(
   }
 );
 
+// Selector that gets all book ids
 export const selectAllBookIds = createSelector([selectBooks], (book) => {
   let allBookIds = [];
 

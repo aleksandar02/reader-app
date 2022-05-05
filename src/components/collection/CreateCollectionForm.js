@@ -1,10 +1,10 @@
+import Button from '../button/Button';
+
 import { TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import * as Yup from 'yup';
 import { addCollection } from '../../redux/collection/collection.actions';
-
-import Button from '../button/Button';
 
 const initialValues = {
   name: '',

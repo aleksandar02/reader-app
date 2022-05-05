@@ -1,6 +1,8 @@
 import { createSelector } from 'reselect';
 import { CollectionActionTypes } from './collection.types';
 
+// Initial/Default state
+// It has two default collections ('Default' and 'Completed' collection) that cannot be deleted
 const initialState = {
   byId: {
     'defaultCollection': {
@@ -33,6 +35,7 @@ const collectionReducer = (state = initialState, action) => {
     case CollectionActionTypes.REMOVE_COLLECTION: {
       let filteredCollections = {};
 
+      // Filter Collections by collection id
       Object.values(state.byId).forEach((collection) => {
         if (collection.id != action.payload) {
           filteredCollections = {
@@ -53,9 +56,10 @@ const collectionReducer = (state = initialState, action) => {
   }
 };
 
-// Input selector
 const selectCollections = (state) => state;
 
+// Selector that gets 'custom' collections,
+// i.e. All Collections besides 'Default' and 'Completed' collection
 export const selectCustomCollections = createSelector(
   [selectCollections],
   (collection) => {
@@ -74,6 +78,7 @@ export const selectCustomCollections = createSelector(
   }
 );
 
+// Selector that gets Collection by collection id
 export const selectCollectionById = createSelector(
   [selectCollections, (state, id) => id],
   (collection, id) => {
@@ -85,12 +90,13 @@ export const selectCollectionById = createSelector(
   }
 );
 
+// Selector that gets Collections by array of collection ids
 export const selectCollectionsByIds = createSelector(
-  [selectCollections, (state, ids) => ids],
-  (collection, ids) => {
+  [selectCollections, (state, collectionIds) => collectionIds],
+  (collection, collectionIds) => {
     let selectedCollections = [];
 
-    ids.forEach((id) => {
+    collectionIds.forEach((id) => {
       selectedCollections = [...selectedCollections, collection.byId[id]];
     });
 
@@ -98,6 +104,7 @@ export const selectCollectionsByIds = createSelector(
   }
 );
 
+// Selector that gets all Collection ids
 export const selectAllCollectionIds = createSelector(
   [selectCollections],
   (collection) => {

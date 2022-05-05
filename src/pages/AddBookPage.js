@@ -1,6 +1,7 @@
 import Header from '../components/header/Header';
 import AddBookForm from '../components/book/AddBookForm';
 import SearchBook from '../components/book/SearchBook';
+
 import { useState } from 'react';
 
 const AddBookPage = () => {
@@ -12,7 +13,8 @@ const AddBookPage = () => {
 
   const [selectedBook, setSelectedBook] = useState(null);
 
-  const selectBook = (book) => {
+  // When user selects the book -> set form values and save selected book
+  const handleSelectBook = (book) => {
     setInitialValues({ title: book.title, author: book.author, status: '' });
     setSelectedBook(book);
   };
@@ -31,7 +33,7 @@ const AddBookPage = () => {
           selectedBook={selectedBook}
           setSelectedBook={setSelectedBook}
         />
-        <SearchBook selectBook={selectBook} />
+        <SearchBook handleSelectBook={handleSelectBook} />
       </div>
     </div>
   );

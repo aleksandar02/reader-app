@@ -1,13 +1,14 @@
 import Collection from '../components/collection/Collection';
+import SearchBar from '../components/searchBar/SearchBar';
+import Header from '../components/header/Header';
+import Button from '../components/button/Button';
+
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { selectBooksByIds } from '../redux/book/book.reducer';
 import { selectBookIdsByCollectionId } from '../redux/bookCollection/bookCollection.reducer';
 import { selectCollectionById } from '../redux/collection/collection.reducer';
-import SearchBar from '../components/searchBar/SearchBar';
 import { useState } from 'react';
-import Header from '../components/header/Header';
-import Button from '../components/button/Button';
 import { removeCollection } from '../redux/collection/collection.actions';
 
 const BookCollectionPage = () => {
@@ -16,14 +17,17 @@ const BookCollectionPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Select current collection
   const collection = useSelector((state) =>
     selectCollectionById(state.collection, collectionId)
   );
 
+  // Select book ids in current collection
   const bookIds = useSelector((state) =>
     selectBookIdsByCollectionId(state.bookCollection, collection.id)
   );
 
+  // Select books in current collection by book ids
   const books = useSelector((state) => selectBooksByIds(state.book, bookIds));
 
   const filteredBooks = books.filter((book) => {
@@ -34,12 +38,14 @@ const BookCollectionPage = () => {
     }
   });
 
+  // If collection does not exist navigate to default collection
   if (!collection) {
     return navigate('/');
   }
 
   let deleteCollectionButton = null;
 
+  // Show deleteCollectionButton only on custom collections
   if (
     collection.id != 'defaultCollection' &&
     collection.id != 'completedCollection'
@@ -81,7 +87,7 @@ const BookCollectionPage = () => {
         )}
       </div>
 
-      <Collection filteredBooks={filteredBooks} collection={collection} />
+      <Collection books={filteredBooks} collection={collection} />
     </div>
   );
 };

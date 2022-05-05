@@ -1,4 +1,5 @@
-export const getRemoveBookCollectionId = (
+// Method that returns Book Collection Id that needs to be removed
+export const getBookCollectionIdToRemove = (
   bookCollections,
   collectionId,
   bookId
@@ -17,7 +18,9 @@ export const getRemoveBookCollectionId = (
   return removeBookCollectionId;
 };
 
-export const filterBookCollectionById = (
+// Method that filters Book Collections by id
+// i.e. Removes Book Collection by id
+export const filterBookCollectionsById = (
   bookCollections,
   removeBookCollectionId
 ) => {

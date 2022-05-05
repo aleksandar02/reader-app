@@ -25,6 +25,7 @@ export const noteReducer = (state = initialState, action) => {
     case NoteActionTypes.REMOVE_NOTE: {
       let filteredNotes = {};
 
+      // Filter Notes by id
       Object.values(state.byId).forEach((note) => {
         if (note.id != action.payload) {
           filteredNotes = { ...filteredNotes, [note.id]: { ...note } };
@@ -40,6 +41,8 @@ export const noteReducer = (state = initialState, action) => {
     case NoteActionTypes.REMOVE_BOOK_NOTES: {
       let filteredNotes = {};
 
+      // Filter Notes by book id
+      // i.e. Remove all Book Notes for certain Book
       Object.values(state.byId).forEach((note) => {
         if (note.bookId != action.payload) {
           filteredNotes = { ...filteredNotes, [note.id]: { ...note } };
@@ -59,6 +62,7 @@ export const noteReducer = (state = initialState, action) => {
 
 const selectNotes = (state) => state;
 
+// Select all Notes for certain Book
 export const selectAllNotes = createSelector(
   [selectNotes, (state, bookId) => bookId],
   (note, bookId) => {

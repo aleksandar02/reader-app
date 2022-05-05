@@ -1,6 +1,7 @@
 import { ModalActionTypes } from './modal.types';
 import { createSelector } from 'reselect';
 
+// Initial/Default state
 const initialState = {
   show: false,
   modalData: {},

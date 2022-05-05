@@ -2,7 +2,7 @@ import { BiPlus } from 'react-icons/bi';
 
 const CollectionListItem = ({
   collection,
-  handleOnChange,
+  saveSelectedCollectionId,
   selectedIds,
   cssClass,
 }) => {
@@ -15,7 +15,7 @@ const CollectionListItem = ({
   return (
     <div
       className={`collection-list-item ${selectedCollectionCssClass} ${cssClass}`}
-      onClick={() => handleOnChange(collection.id)}
+      onClick={() => saveSelectedCollectionId(collection.id)}
     >
       <p>{collection.name}</p>
       <BiPlus />

@@ -7,26 +7,24 @@ import {
 import { removeBookNotes } from '../note/note.actions';
 import { BookActionTypes } from './book.types';
 
+// Action Creator that changes the book status (To read, Reading, Done)
 export const changeBookStatus = (bookId, status) => (dispatch) => {
-  try {
-    dispatch({
-      type: BookActionTypes.CHANGE_BOOK_STATUS,
-      payload: {
-        bookId: bookId,
-        status: status,
-      },
-    });
+  dispatch({
+    type: BookActionTypes.CHANGE_BOOK_STATUS,
+    payload: {
+      bookId: bookId,
+      status: status,
+    },
+  });
 
-    if (status == 3) {
-      dispatch(addBookToCollection('completedCollection', bookId));
-    } else {
-      dispatch(removeBookFromCollection('completedCollection', bookId));
-    }
-  } catch (err) {
-    console.log(err);
+  if (status == 3) {
+    dispatch(addBookToCollection('completedCollection', bookId));
+  } else {
+    dispatch(removeBookFromCollection('completedCollection', bookId));
   }
 };
 
+// Action Creator that saves new book
 export const saveBook = (book, collectionIds) => (dispatch) => {
   dispatch({
     type: BookActionTypes.SAVE_BOOK,
@@ -37,6 +35,8 @@ export const saveBook = (book, collectionIds) => (dispatch) => {
   }
 };
 
+// Action Creator that deletes the book completely
+// i.e. Removes from all collections and deletes all book notes
 export const deleteBook = (bookId, navigate) => (dispatch) => {
   dispatch({
     type: BookActionTypes.DELETE_BOOK,
