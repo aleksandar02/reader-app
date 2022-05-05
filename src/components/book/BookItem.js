@@ -42,7 +42,8 @@ const BookItem = ({
 
   if (
     collectionId != 'defaultCollection' &&
-    collectionId != 'completedCollection'
+    collectionId != 'completedCollection' &&
+    !canSelectBook
   ) {
     removeBookButton = (
       <div
