@@ -13,13 +13,9 @@ const AddBookPage = () => {
   const [selectedBook, setSelectedBook] = useState(null);
 
   const selectBook = (book) => {
-    setInitialValues((prevState) => {
-      return { ...prevState, title: book.title, author: book.author };
-    });
+    setInitialValues({ title: book.title, author: book.author, status: '' });
     setSelectedBook(book);
   };
-
-  console.log(initialValues);
 
   return (
     <div className='main-section'>

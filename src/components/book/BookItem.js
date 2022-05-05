@@ -3,6 +3,7 @@ import { BiX } from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import { removeBookFromCollection } from '../../redux/bookCollection/bookCollection.actions';
 import { useDispatch } from 'react-redux';
+import StatusLabel from '../statusLabel/StatusLabel';
 
 const BookItem = ({
   book,
@@ -25,16 +26,16 @@ const BookItem = ({
       ? book.title.substring(0, 24).concat('...')
       : book.title;
 
-  let bookStatusBtn = (
-    <Button cssStyle='status-label to-read' buttonText='To Read' />
+  let statusLabel = (
+    <StatusLabel cssStyle='status-label to-read' labelText='To Read' />
   );
 
   if (book.status == 2) {
-    bookStatusBtn = (
-      <Button cssStyle='status-label reading' buttonText='Reading' />
+    statusLabel = (
+      <StatusLabel cssStyle='status-label reading' labelText='Reading' />
     );
   } else if (book.status == 3) {
-    bookStatusBtn = <Button cssStyle='status-label done' buttonText='Done' />;
+    statusLabel = <StatusLabel cssStyle='status-label done' labelText='Done' />;
   }
 
   let removeBookButton = null;
@@ -83,7 +84,7 @@ const BookItem = ({
         <div className='book-item-details-info'>
           <h3>{title}</h3>
           <p>{book.author}</p>
-          {bookStatusBtn}
+          {statusLabel}
         </div>
       </div>
       {removeBookButton}

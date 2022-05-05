@@ -26,8 +26,6 @@ const AddBooksToCollectionPage = () => {
   // Select All book Ids
   const allBookIds = useSelector((state) => selectAllBookIds(state.book));
 
-  console.log(allBookIds);
-
   // Select Book Ids that exist in current collection
   const bookIdsInCollection = useSelector((state) =>
     selectBookIdsInCollection(state.bookCollection, collection.id)

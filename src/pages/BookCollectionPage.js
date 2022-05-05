@@ -1,6 +1,6 @@
 import Collection from '../components/collection/Collection';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { selectBooksByIds } from '../redux/book/book.reducer';
 import { selectBookIdsByCollectionId } from '../redux/bookCollection/bookCollection.reducer';
 import { selectCollectionById } from '../redux/collection/collection.reducer';
@@ -34,11 +34,11 @@ const BookCollectionPage = () => {
     }
   });
 
-  let deleteCollectionButton = null;
-
   if (!collection) {
-    return <Navigate to='/' />;
+    return navigate('/');
   }
+
+  let deleteCollectionButton = null;
 
   if (
     collection.id != 'defaultCollection' &&
