@@ -2,6 +2,7 @@ import { fetchBooks } from './book.utils';
 import { useEffect, useState } from 'react';
 import BookPreview from './BookPreview';
 import { Autocomplete, TextField } from '@mui/material';
+import _, { uniq } from 'underscore';
 
 const SearchBook = ({ handleSelectBook }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -20,7 +21,9 @@ const SearchBook = ({ handleSelectBook }) => {
           );
 
           if (bookResults) {
-            setSearchResults(bookResults);
+            let uniqueBookResults = _.uniq(bookResults, (book) => book.title);
+
+            setSearchResults(uniqueBookResults);
           }
         } else {
           setSearchResults([]);
