@@ -10,7 +10,7 @@ const Collection = ({ books, collection }) => {
             <BookItem key={book.id} book={book} collectionId={collection.id} />
           ))
         ) : (
-          <p>No books to show.</p>
+          <p>No books.</p>
         )}
       </Books>
     </div>

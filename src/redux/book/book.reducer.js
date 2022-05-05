@@ -22,11 +22,11 @@ const initialState = {
     },
     'book3': {
       id: 'book3',
-      title: 'Harry Potter: Prisoner of Azkaban',
-      author: 'J.K. Rowling',
+      title: 'The Invisible Man',
+      author: 'H. G. Wells',
       isbn: 'VCDFFFDF2D',
-      cover_i: 10580435,
-      status: 1,
+      cover_i: 6419199,
+      status: 2,
     },
     'book4': {
       id: 'book4',
